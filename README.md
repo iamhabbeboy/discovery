@@ -1,4 +1,5 @@
-# my-place
+# Discovery
+Discovery is a web app that built with VueJS
 
 ## Project setup
 ```
