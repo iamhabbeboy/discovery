@@ -2,20 +2,17 @@
     <div>
         <p> Do you recognise this place </p>
         <div class="wrap">
-            <div class="left-1">
-                <a href="">
-                    <img src="../assets/1.jpg" class="image">
-                </a>
-            </div>
-            <div class="right-1">
-                <a href="#">
-                    <img src="../assets/2.jpg" class="image">
-                </a>
+            <div v-for="image of images" v-bind:key="image.id">
+                <div class="left-1">
+                    <a href="">
+                        <img src="../assets/2.jpg" class="image">
+                    </a>
+                </div>
             </div>
         </div>
         <div class="answer">
             <div v-for="col of answer" v-bind:key="col.id">
-                <input type="text" class="col" :id="col" >
+                <input type="text" readonly class="col" :id="col" @click="clear_text(col)">
             </div>
         </div>
 
@@ -38,14 +35,14 @@ export default {
         this.loader();
         this.suggestion();
     },
-    mounted() {
-        this.watcher()
-    },
+
     data() {
         return {
             images: [],
             column: '',
-            answer: 0
+            answer: 0,
+            clicked: 0,
+            store: ''
         }
     },
     methods: {
@@ -55,6 +52,8 @@ export default {
             this.images    = data.images;
             this.column    = data.answer;
             this.answer    = this.column;
+            this.clicked   = 0;
+            console.log(this.images)
         },
 
         suggestion() {
@@ -75,7 +74,7 @@ export default {
         selection(val) {
             val = val.toLowerCase()
             const input = document.querySelectorAll('input[type=text]')
-            // this.watcher();
+             this.watcher(val);
             for(let i = 0; i< input.length; i++) {
                 if( input[i].value == '' ) {
                     return input[i].value = val
@@ -83,38 +82,26 @@ export default {
             }
         },
 
-        clear_text() {
-            console.log()
+        clear_text(e) {
+            this.clicked -= 1
+            this.store.replace(e, ' ')
+            return document.querySelector(`#${e}`).value = ''
         },
 
-        watcher() {
+        watcher(val) {
+            this.clicked += 1
+            this.store += val
 
-            let input = document.querySelectorAll('input[type=text]')
-            // let col   = document.querySelector('.col')
-            // let combine = '';
+            console.log(this.clicked +' '+ this.store)
 
-            // if( input[input.length -1].value ) {
-            //     for(let i = 0; i< input.length; i++) {
-            //         combine += input[i].value
-            //     }
-            //     console.log(combine +', ' + this.answer)
-            //     if( combine.toLowerCase() === this.answer ) {
-            //         alert('You are correct');
-            //         col.style.color = "green"
-            //     } else {
-            //         alert('oOps you are wrong')
-            //         col.style.color = "red"
-            //     }
-            // } else {
-            //     console.log('some column still empty')
-            // }
+            if( this.store == this.answer && this.clicked >= this.answer.length ) {
+                alert('You are correct')
+            }
 
-        }
-    },
+            if( this.store !== this.answer && this.clicked >= this.answer.length) {
+                alert('Your answer is wrong, try again')
+            }
 
-    watch: {
-        val(value) {
-            this.answer = value
         }
     }
 }

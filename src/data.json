@@ -1,11 +1,11 @@
 {
     "data": [{
         "category": "places",
-        "answer": "oshodi",
+        "answer": "lagos",
         "type": "easy",
         "images": [
-            "../assets/1.jpg",
-            "../assets/2.jpg"
+            "./assets/1.jpg",
+            "./assets/2.jpg"
         ]
     }, {
         "category": "programming",
